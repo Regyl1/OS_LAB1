@@ -7,37 +7,42 @@ error_check()
 
 case "$1" in
 1)
-echo -e "\e[31mАргументы должны быть целыми числами.\e[0m" >&2
+echo -e "\e[31mERROR 1: Аргументы должны быть целыми числами.\e[0m" >&2
 ;;
 2)
-echo -e "\e[31mНевозможное действие: Деление на ноль.\e[0m" >&2
+echo -e "\e[31mERROR 2: Невозможное действие: Деление на ноль.\e[0m" >&2
 ;;
 3)
-echo -e "\e[31mНеправильно введено математическое действие. Справка по командам ./main.sh help.\e[0m" >&2
+echo -e "\e[31mERROR 3: Неправильно введено математическое действие. Справка по командам ./main.sh help.\e[0m" >&2
 ;;
 4)
-echo -e "\e[31mНеправильно введена команда. Справка по командам ./main.sh help\e[0m" >&2
+echo -e "\e[31mERROR 4: Неправильно введена команда. Справка по командам ./main.sh help\e[0m" >&2
 ;;
 5)
-echo -e "\e[31mНеправильное кол-ва аргументов. Справка по командам ./main.sh help\e[0m" >&2
+echo -e "\e[31mERROR 5: Неправильное кол-ва аргументов. Справка по командам ./main.sh help\e[0m" >&2
 ;;
 6)
-echo -e "\e[31mИскомый файл не найден или не существует\e[0m" >&2
+echo -e "\e[31mERROR 6: Искомый файл не найден или не существует\e[0m" >&2
 ;;
 7)
-echo -e "\e[31mНедостаточно прав для исполнения скрипта\e[0m" >&2
+echo -e "\e[31mERROR 7: Недостаточно прав для исполнения скрипта\e[0m" >&2
 ;;
 8)
-echo -e "\e[31mНедостаточно прав для чтения файла\e[0m" >&2
+echo -e "\e[31mERROR 8: Недостаточно прав для чтения файла\e[0m" >&2
 ;;
 9)
-echo -e "\e[31mНедостаточно прав для записи файла\e[0m"
+echo -e "\e[31mERROR 9: Недостаточно прав для записи файла\e[0m"
 ;;
 10)
-echo -e "\e[31mФайл скрипта не найдет или не существует\e[0m"
+echo -e "\e[31mERROR 10: Файл скрипта не найдет или не существует\e[0m"
 ;;
 esac
+if ! [ -z $2 ]
+then
+echo $1 >&2
+else
 exit $1
+fi
 }
 
 check_arg_count()
@@ -189,10 +194,10 @@ exit)
 err=0
 check_script_exists exit.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 check_file_read exit.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 
 if [ $# -gt 2 ]
 then
@@ -210,13 +215,13 @@ help)
 err=0
 check_script_exists ./help.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 check_file_read ./help.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 check_arg_count $# 1
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 #####
 source ./help.sh
 help
@@ -227,13 +232,13 @@ interactive)
 err=0
 check_script_exists ./interactive.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 check_file_read ./interactive.sh
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 check_arg_count $# 1
 err=$?
-if ![ $err -eq 0 ]; then error_check $err; fi
+if ! [ $err -eq 0 ]; then error_check $err; fi
 #####
 source ./interactive.sh
 interactive
