@@ -2,6 +2,13 @@
 
 log()
 {
+local err
+check_file_exists "/var/log/anaconda/X.log"
+err=$?
+if ! [ $err -eq 0 ]; then return $err; fi
+check_file_read "/var/log/anaconda/X.log"
+err=$?
+if ! [ $err -eq 0 ]; then return $err; fi
 
 while read str
 do

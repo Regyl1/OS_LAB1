@@ -6,68 +6,240 @@ error_check()
 {
 
 case "$1" in
-"1")
+1)
 echo -e "\e[31mАргументы должны быть целыми числами.\e[0m" >&2
 ;;
-"2")
+2)
 echo -e "\e[31mНевозможное действие: Деление на ноль.\e[0m" >&2
 ;;
-"3")
+3)
 echo -e "\e[31mНеправильно введено математическое действие. Справка по командам ./main.sh help.\e[0m" >&2
+;;
+4)
+echo -e "\e[31mНеправильно введена команда. Справка по командам ./main.sh help\e[0m" >&2
+;;
+5)
+echo -e "\e[31mНеправильное кол-ва аргументов. Справка по командам ./main.sh help\e[0m" >&2
+;;
+6)
+echo -e "\e[31mИскомый файл не найден или не существует\e[0m" >&2
+;;
+7)
+echo -e "\e[31mНедостаточно прав для исполнения скрипта\e[0m" >&2
+;;
+8)
+echo -e "\e[31mНедостаточно прав для чтения файла\e[0m" >&2
+;;
+9)
+echo -e "\e[31mНедостаточно прав для записи файла\e[0m"
+;;
+10)
+echo -e "\e[31mФайл скрипта не найдет или не существует\e[0m"
 ;;
 esac
 exit $1
 }
 
+check_arg_count()
+{
+if ! [ $1 -eq $2 ]
+then
+return 5
+fi
+}
+
+check_file_exists()
+{
+if ! [ -e "$1" ]
+then
+return 6
+fi
+}
+
+check_file_access()
+{
+if ! [ -x "$1" ]
+then
+return 7
+fi
+}
+
+check_file_read()
+{
+if ! [ -r "$1" ]
+then
+return 8
+fi
+}
+
+check_file_write()
+{
+if ! [ -w "$1" ]
+then
+return 9
+fi
+}
+check_script_exists()
+{
+if ! [ -e "$1" ]
+then
+return 10
+fi
+}
 
 #main
+
+
 case "$1" in
 
 calc)
+#####
+err=0
+check_script_exists ./calc.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./calc.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 4
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./calc.sh
 calc $2 $3 $4
-error_check $?
+
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
 ;;
 
 search)
+#####
+err=0
+check_script_exists ./search.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./search.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 3
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./search.sh
 search $3 $2
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
 ;;
 
 reverse)
+#####
+err=0
+check_script_exists ./reverse.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./reverse.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 3
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./reverse.sh
 reverse $2 $3
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
 ;;
 
 strlen)
+#####
+err=0
+check_script_exists ./strlen.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./strlen.sh
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 2
+if ! [ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./strlen.sh
 strlen $2
 ;;
 
 log)
+#####
+err=0
+check_file_exists ./log.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./log.sh
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 1
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./log.sh
 log
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
 ;;
 
 exit)
+#####
+err=0
+check_script_exists exit.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+check_file_read exit.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+
 if [ $# -gt 2 ]
 then
+error_check 5
+else
 source ./exit.sh
 exit1 $2
+err=$?
+if ! [ $err -eq 0 ]; then error_check $err; fi
 fi
 ;;
 
 help)
+####
+err=0
+check_script_exists ./help.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./help.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 1
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./help.sh
 help
 ;;
 
 interactive)
+#####
+err=0
+check_script_exists ./interactive.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+check_file_read ./interactive.sh
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+check_arg_count $# 1
+err=$?
+if ![ $err -eq 0 ]; then error_check $err; fi
+#####
 source ./interactive.sh
 interactive
 ;;
-
 *)
+error_check 4
 ;;
 esac
 exit 0
