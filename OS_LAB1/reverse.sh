@@ -2,13 +2,23 @@
 
 reverse()
 {
+local err
 check_file_exists "$1"
-echo "$?"
-if ! [ $? -eq 0 ]; then return $?; fi
+err="$?"
+if ! [ $err -eq 0 ]; then return $err; fi
 check_file_read "$1"
-if ! [ $? -eq 0 ]; then return $?; fi
+err="$?"
+if ! [ $err -eq 0 ]; then return $err; fi
+check_file_exists "$2"
+if [ $? -eq 0 ]
+then
 check_file_write "$2"
-if ! [ $? -eq 0 ]; then return $?; fi
+err="$?"
+if ! [ $err -eq 0 ]; then return $err; fi
+else
+echo > "$2"
+fi
+
 
 rev $1 | tac > $2
 }

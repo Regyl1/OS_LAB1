@@ -36,6 +36,9 @@ echo -e "\e[31mERROR 9: Недостаточно прав для записи ф
 10)
 echo -e "\e[31mERROR 10: Файл скрипта не найдет или не существует\e[0m"
 ;;
+11)
+echo -e "\e[31mERROR 11: Код завершения должен быть целым числом в диапазоне [0-255]\e[0m"
+;;
 esac
 if ! [ -z $2 ]
 then
@@ -162,12 +165,14 @@ check_script_exists ./strlen.sh
 err=$?
 if ! [ $err -eq 0 ]; then error_check $err; fi
 check_file_read ./strlen.sh
+err=$?
 if ! [ $err -eq 0 ]; then error_check $err; fi
 check_arg_count $# 2
+err=$?
 if ! [ $err -eq 0 ]; then error_check $err; fi
 #####
 source ./strlen.sh
-strlen $2
+strlen "$2"
 ;;
 
 log)
