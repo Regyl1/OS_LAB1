@@ -9,15 +9,16 @@ if ! [ $err -eq 0 ]; then return $err; fi
 check_file_read "$1"
 err="$?"
 if ! [ $err -eq 0 ]; then return $err; fi
+
 check_file_exists "$2"
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
 check_file_write "$2"
-err="$?"
-if ! [ $err -eq 0 ]; then return $err; fi
 else
-echo > "$2"
+if ! [ -w "$2" ]; then return 12; fi
+err="$?"
 fi
+echo > "$2"
+
 
 
 rev $1 > "temp"
