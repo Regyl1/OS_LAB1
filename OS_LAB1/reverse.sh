@@ -13,6 +13,8 @@ if ! [ $err -eq 0 ]; then return $err; fi
 check_file_exists "$2"
 if [ $? -eq 0 ]; then
 check_file_write "$2"
+err="$?"
+if ! [ $err -eq 0 ]; then return $err; fi
 else
 if ! [ -w "$2" ]; then return 12; fi
 echo > "$2"
