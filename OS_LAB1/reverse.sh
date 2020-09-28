@@ -15,9 +15,9 @@ if [ $? -eq 0 ]; then
 check_file_write "$2"
 else
 if ! [ -w "$2" ]; then return 12; fi
-err="$?"
-fi
 echo > "$2"
+fi
+
 
 
 
