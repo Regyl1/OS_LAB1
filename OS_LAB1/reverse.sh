@@ -20,5 +20,7 @@ echo > "$2"
 fi
 
 
-rev $1 | tac > $2
+rev $1 > "temp"
+tac "temp" > $2
+rm temp
 }
