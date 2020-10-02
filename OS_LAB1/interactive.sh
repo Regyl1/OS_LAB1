@@ -87,10 +87,12 @@ check_file_read ./strlen.sh
 err=$?
 if ! [ $err -eq 0 ]; then error_check $err 1; fi
 #####
+echo "Введите строку, кавычки считаются как символ."
 echo "str:"
 read str
+if [ -z "$str" ]; then error_check 5 1; continue; fi;
 source ./strlen.sh
-strlen $str
+strlen "$str"
 ;;
 
 5)

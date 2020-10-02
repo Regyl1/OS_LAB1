@@ -16,8 +16,7 @@ check_file_write "$2"
 err="$?"
 if ! [ $err -eq 0 ]; then return $err; fi
 else
-if ! [ -w "$2" ]; then return 12; fi
-echo > "$2"
+if ! touch "$2" 2> /dev/null; then return 12; fi
 fi
 
 
